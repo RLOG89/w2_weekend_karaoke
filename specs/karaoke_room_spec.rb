@@ -12,6 +12,7 @@ class TestKaraokeRoom < MiniTest::Test
     @room_1 = KaraokeRoom.new("Sizzling 70s")
     @room_2 = KaraokeRoom.new("Eclectic 80s")
     @room_3 = KaraokeRoom.new("Naughty 90s")
+    @room_4 = KaraokeRoom.new("Big Room", 20)
 
     @guest_1 = Guest.new("Big Tony")
     @guest_2 = Guest.new("Janice fae the Broch")
@@ -32,5 +33,29 @@ class TestKaraokeRoom < MiniTest::Test
     assert_equal("Imagine", @room_1.song.title)
   end
 
+  def test_check_in_guest
+    @room_2.check_in_guest(@guest_1)
+    guest = @room_2.is_guest_in_room?(@guest_1)
+    assert_equal(guest, true)
+    assert_equal("Big Tony", @room_2.guests[0].name)
+  end
+
+  def test_check_out_guest
+    @room_3.check_in_guest(@guest_2)
+    @room_3.check_out_guest(@guest_2)
+    assert_equal(false, @room_3.is_guest_in_room?(@guest_2))
+  end
+
+  def test_big_room_has_capacity_of_20
+    assert_equal(20, @room_4.capacity)
+  end
+
+  def test_cant_go_over_capacity
+    room = KaraokeRoom.new("Small Room", 2)
+    [@guest_1, @guest_2, @guest_3].each do |guest|
+      room.check_in_guest(guest)
+    end
+    assert_equal(2, room.guests.count)
+  end
 
 end
