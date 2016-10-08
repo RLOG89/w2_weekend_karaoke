@@ -14,9 +14,9 @@ class TestKaraoke < MiniTest::Test
     @room_3 = Karaoke.new("Naughty 90s")
     @room_4 = Karaoke.new("Big Room", 20)
 
-    @guest_1 = Guest.new("Big Tony")
-    @guest_2 = Guest.new("Janice fae the Broch")
-    @guest_3 = Guest.new("Martin")
+    @tony = Guest.new("Big Tony", 100)
+    @janice = Guest.new("Janice fae the Broch", 5)
+    @martin = Guest.new("Martin")
 
     @song_1 = Song.new("John Lennon", "Imagine")
     @song_2 = Song.new("Led Zepplin", "Stairway to Heaven")
@@ -34,28 +34,38 @@ class TestKaraoke < MiniTest::Test
   end
 
   def test_check_in_guest
-    @room_2.check_in_guest(@guest_1)
-    guest = @room_2.is_guest_in_room?(@guest_1)
+    @room_2.check_in_guest(@tony)
+    guest = @room_2.is_guest_in_room?(@tony)
     assert_equal(guest, true)
     assert_equal("Big Tony", @room_2.guests[0].name)
   end
 
   def test_check_out_guest
-    @room_3.check_in_guest(@guest_2)
-    @room_3.check_out_guest(@guest_2)
-    assert_equal(false, @room_3.is_guest_in_room?(@guest_2))
+    @room_3.check_in_guest(@janice)
+    @room_3.check_out_guest(@janice)
+    assert_equal(false, @room_3.is_guest_in_room?(@janice))
   end
 
   def test_big_room_has_capacity_of_20
     assert_equal(20, @room_4.capacity)
   end
 
-  def test_cant_go_over_capacity
-    room = Karaoke.new("Small Room", 2)
-    [@guest_1, @guest_2, @guest_3].each do |guest|
+  def test_have_sufficient_funds_to_enter
+    room = Karaoke.new("Small Room", 0)
+    count = 0
+    [@tony, @janice, @martin].select{|p| p.money >= room.cost}.each do |guest|
+      count += 1
       room.check_in_guest(guest)
     end
-    assert_equal(2, room.guests.count)
+    assert_equal(count, room.guests.count)
+  end
+
+  def test_guest_has_enough_money_for_entry
+    assert_equal(100, @tony.money)
+    assert_equal(10, @room_1.cost)
+    @room_1.check_in_guest(@tony)
+    assert_equal(90, @tony.money)
+    assert_equal(true, @room_1.is_guest_in_room?(@tony))
   end
 
 end

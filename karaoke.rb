@@ -4,13 +4,14 @@ require_relative 'room'
 
 class Karaoke < Room
 
-  attr_reader :song, :guests, :capacity
+  attr_reader :song, :guests, :capacity, :cost
 
   def initialize(name, capacity = 5)
     @name = name
     @song = nil
     @guests = []
     @capacity = capacity
+    @cost = 10
   end
 
   def play_song(song)
@@ -18,8 +19,9 @@ class Karaoke < Room
   end
 
   def check_in_guest(guest)
-    if @guests.count < @capacity 
-      @guests.push(guest)
+    if @guests.count < @capacity && guest.money >= @cost 
+      @guests.push(guest) 
+      guest.money -= @cost
     else 
       puts "This room is full, please choose another"
       return nil
