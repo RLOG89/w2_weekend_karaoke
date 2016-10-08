@@ -1,18 +1,18 @@
 require 'minitest/autorun'
 require 'minitest/rg'
 require 'pry'
-require_relative '../karaoke_room'
+require_relative '../karaoke'
 require_relative '../guest'
 require_relative '../song'
 
-class TestKaraokeRoom < MiniTest::Test
+class TestKaraoke < MiniTest::Test
 
   def setup
   
-    @room_1 = KaraokeRoom.new("Sizzling 70s")
-    @room_2 = KaraokeRoom.new("Eclectic 80s")
-    @room_3 = KaraokeRoom.new("Naughty 90s")
-    @room_4 = KaraokeRoom.new("Big Room", 20)
+    @room_1 = Karaoke.new("Sizzling 70s")
+    @room_2 = Karaoke.new("Eclectic 80s")
+    @room_3 = Karaoke.new("Naughty 90s")
+    @room_4 = Karaoke.new("Big Room", 20)
 
     @guest_1 = Guest.new("Big Tony")
     @guest_2 = Guest.new("Janice fae the Broch")
@@ -51,7 +51,7 @@ class TestKaraokeRoom < MiniTest::Test
   end
 
   def test_cant_go_over_capacity
-    room = KaraokeRoom.new("Small Room", 2)
+    room = Karaoke.new("Small Room", 2)
     [@guest_1, @guest_2, @guest_3].each do |guest|
       room.check_in_guest(guest)
     end

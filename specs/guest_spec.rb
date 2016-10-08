@@ -12,8 +12,4 @@ class TestGuest < MiniTest::Test
     assert_equal("Rocky Road", @guest.name)
   end
 
-
-
-
-
 end

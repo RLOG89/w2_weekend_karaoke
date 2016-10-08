@@ -2,9 +2,9 @@ require_relative 'song'
 require_relative 'guest'
 require_relative 'room'
 
-class KaraokeRoom
+class Karaoke < Room
 
-  attr_reader :name, :song, :guests, :capacity
+  attr_reader :song, :guests, :capacity
 
   def initialize(name, capacity = 5)
     @name = name
