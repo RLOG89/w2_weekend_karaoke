@@ -7,10 +7,5 @@ class Song
     @title = title
   end
 
-  # def add_song(artist, title)
-  #   songs = []
-  #   songs.push(@song)
-  # end
-
 end
 

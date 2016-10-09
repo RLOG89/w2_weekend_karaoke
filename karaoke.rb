@@ -1,13 +1,14 @@
 require_relative 'song'
 require_relative 'guest'
 require_relative 'room'
+require_relative 'bar'
 
 class Karaoke < Room
 
   attr_reader :song, :guests, :capacity, :cost
 
   def initialize(name, capacity = 5)
-    @name = name
+    super(name)
     @song = nil
     @guests = []
     @capacity = capacity
@@ -23,7 +24,7 @@ class Karaoke < Room
       @guests.push(guest) 
       guest.money -= @cost
     else 
-      puts "This room is full, please choose another"
+      puts "This room is full, #{guest.name} please choose another"
       return nil
     end
   end
@@ -36,6 +37,11 @@ class Karaoke < Room
     @guests.delete(guest)
   end
 
+  # def guest_buys_a_drink
+  #   drinks_count = 0
+  #   @guest.money -= @drinks_list.fetch(key)
+  #   @till_balance += @drinks_list.fetch(key)
+  #   @guest.drinks_count += 1
+  # end
 
- 
 end

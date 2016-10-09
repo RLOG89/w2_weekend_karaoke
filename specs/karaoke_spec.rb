@@ -4,6 +4,7 @@ require 'pry'
 require_relative '../karaoke'
 require_relative '../guest'
 require_relative '../song'
+require_relative '../bar'
 
 class TestKaraoke < MiniTest::Test
 
@@ -50,17 +51,17 @@ class TestKaraoke < MiniTest::Test
     assert_equal(20, @room_4.capacity)
   end
 
-  def test_have_sufficient_funds_to_enter
+  def test_only_those_with_sufficient_funds_can_enter
     room = Karaoke.new("Small Room", 1)
     count = 0
-    [@tony, @janice, @martin].select{|p| p.money >= room.cost}.each do |guest|
+    [@tony, @janice, @martin].select{|person| person.money >= room.cost}.each do |guest|
       count += 1
       room.check_in_guest(guest)
     end
-    assert_equal(count, room.guests.count)
+    assert_equal(1, room.guests.count)
   end
 
-  def test_guest_has_enough_money_for_entry
+  def test_guest_successfully_pays_entry_and_enters
     assert_equal(100, @tony.money)
     assert_equal(10, @room_1.cost)
     @room_1.check_in_guest(@tony)
@@ -70,11 +71,21 @@ class TestKaraoke < MiniTest::Test
 
   def test_cant_go_over_capacity
     ross = Guest.new("Ross", 40)
-    david = Guest.new("David", 10000)
+    david = Guest.new("David", 100)
     room = Karaoke.new("David & Ross Disco Room", 1)
     room.check_in_guest(ross)
     room.check_in_guest(david)
     assert_equal(1, room.guests.count)
   end
 
+  # def test_guest_money_decreases_when_buys_drink
+  #   drink_price = @drinks_list.fetch("JD & Coke")
+  #   @tony.money -= drink_price
+  #   assert_equal(95, @tony.money)
+  # end
+
+  # def test_guest_can_buy_a_drink
+  #   @bar.guest_buys_a_drink(@tony)
+  #   assert_equal(1, @tony.drinks_count)
+  # end
 end
